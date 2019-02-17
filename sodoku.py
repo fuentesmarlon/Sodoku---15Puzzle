@@ -1,25 +1,25 @@
 #cadena a convertir (prueba)
-entrada=".4.13.4.1..3.21."
+inputString= ".4.13.4.1..3.21."
 board= [[0 for x in range(4)]for y in range(4)]
 
-def limpiarLista( lista):
-    lista=[]
-    for i in entrada:
+def formatList(inputString):
+    exitList=[]
+    for i in inputString:
         if i==".":
-            lista.append(0)
+            exitList.append(0)
         else:
-            lista.append(int(i))
-    return lista
-def crearTablero(board,lista):
+            exitList.append(int(i))
+    return exitList
+def crearTablero(board, listSudoku):
     count=0
     for i in range(0,4):
         for j in range(0,4):
-            board[i][j]=lista[count]
+            board[i][j]=listSudoku[count]
             count+=1
     return board
 
-lista = limpiarLista(entrada)
-sudoku=crearTablero(board,lista)
+listSudoku = formatList(inputString)
+sudoku=crearTablero(board, listSudoku)
 
-print(lista)
+print(listSudoku)
 print(sudoku)
