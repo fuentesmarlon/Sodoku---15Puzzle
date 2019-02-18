@@ -1,3 +1,4 @@
+from copy import deepcopy
 #function to turn every value in the input into an int number
 def formatList(inputString):
     exitList=[]
@@ -33,7 +34,6 @@ def column(sudoku):
         value = 0
         for row in sudoku:
             value+=row[column]
-            print(value)
         if value==10:
             listColumn.append(True)
         else:
@@ -75,10 +75,10 @@ def checkByRow(sudoku,row,num):
     for i in range(len(sudoku)):
         if i == row:
             rowList= sudoku[i]
-            if num in rowList:
-                return True
+            if (len(rowList) !=len(set(rowList))):
+                return False
         else:
-            return False
+            return True
 
 #checks if value is in column
 def checkByColumn(sudoku,column,num):
@@ -86,12 +86,40 @@ def checkByColumn(sudoku,column,num):
     for row in sudoku:
         value=row[column]
         checkColumn.append(value)
-    if num in checkColumn:
-        return True
-    else:
+    if (len(checkColumn )!=len(set(checkColumn))):
         return False
+    else:
+        return True
 def checkByBlock(sudoku,block):
     pass
+def changeValue(sudoku,row,column,value):
+    sudoku[row][column]=value
+    return sudoku
+
+def getFirstZero(sudoku):
+    position=[]
+    count=0
+    for i in range(len(sudoku)):
+        for j in sudoku:
+            for value in j:
+                if count==0:
+                    if value==0:
+                        position.append(sudoku.index(j))
+                        position.append(j.index(value))
+                        count+=1
+    return position
 def actions(sudoku):
     states={}
+    original= deepcopy(sudoku)
+    coordinates=getFirstZero(sudoku)
+    x=coordinates[0]
+    y=coordinates[1]
+    count=1
+    changeValue(sudoku,x,y,count)
+
+
+
+
+
+
 
