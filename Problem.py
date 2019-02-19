@@ -9,7 +9,7 @@ def formatList(inputString):
             exitList.append(int(i))
     return exitList
 #creates a board with the values from a list
-def crearTablero(board, listInput):
+def boardGenerator(board, listInput):
     count=0
     for i in range(0,4):
         for j in range(0,4):
@@ -18,9 +18,9 @@ def crearTablero(board, listInput):
     return board
 
 #checks if the sum of each rows in board equals to 10
-def row(sudoku):
+def row(board):
     listRow=[]
-    for i in sudoku:
+    for i in board:
         value=sum(i)
         if value==10:
             listRow.append(True)
@@ -28,11 +28,11 @@ def row(sudoku):
             listRow.append(False)
     return listRow
 #checks that each sum of each column is 10
-def column(sudoku):
+def column(board):
     listColumn=[]
-    for column in range(len(sudoku[0])):
+    for column in range(len(board[0])):
         value = 0
-        for row in sudoku:
+        for row in board:
             value+=row[column]
         if value==10:
             listColumn.append(True)
@@ -40,12 +40,12 @@ def column(sudoku):
             listColumn.append(False)
     return listColumn
 #divides the board in four blocks and checks that the sum of all elements is 10
-def block(sudoku):
+def block(board):
     listBlock=[]
-    val1=sudoku[0][0]+sudoku[0][1]+sudoku[1][1]+sudoku[1][0]
-    val2=sudoku[0][2]+sudoku[0][3]+sudoku[1][2]+sudoku[1][3]
-    val3=sudoku[2][0]+sudoku[2][1]+sudoku[3][1]+sudoku[3][0]
-    val4=sudoku[2][2]+sudoku[2][3]+sudoku[3][2]+sudoku[3][3]
+    val1= board[0][0] + board[0][1] + board[1][1] + board[1][0]
+    val2= board[0][2] + board[0][3] + board[1][2] + board[1][3]
+    val3= board[2][0] + board[2][1] + board[3][1] + board[3][0]
+    val4= board[2][2] + board[2][3] + board[3][2] + board[3][3]
     if val1==10:
         listBlock.append(True)
     if val2==10:
@@ -58,68 +58,93 @@ def block(sudoku):
         listBlock.append(False)
     return  listBlock
 #uses the above functions to see if all condicions apply
-def check(sudoku):
+def check(board):
     count=0
-    if(all(i==True for i in column(sudoku))):
+    if(all(i==True for i in column(board))):
         count+=1
-    if(all(i == True for i in row(sudoku))):
+    if(all(i == True for i in row(board))):
         count+=1
-    if(all(i == True for i in block(sudoku))):
+    if(all(i == True for i in block(board))):
         count+=1
     if(count==3):
         return True
     else:
         return False
 #checks if number is in row
-def checkByRow(sudoku,row,num):
-    for i in range(len(sudoku)):
+def checkByRow(board, row, num):
+    duplicates=[]
+    for i in range(len(board)):
         if i == row:
-            rowList= sudoku[i]
-            if (len(rowList) !=len(set(rowList))):
-                return False
-        else:
-            return True
-
+            rowList= board[i]
+    for i in rowList:
+        if i==num:
+            duplicates.append(i)
+    if len(duplicates)>1:
+        return False
+    else:
+        return True
 #checks if value is in column
-def checkByColumn(sudoku,column,num):
+def checkByColumn(board, column, num):
     checkColumn=[]
-    for row in sudoku:
+    duplicates=[]
+    for row in board:
         value=row[column]
         checkColumn.append(value)
-    if (len(checkColumn )!=len(set(checkColumn))):
+
+    for i in checkColumn:
+        if i==num:
+            duplicates.append(i)
+    if len(duplicates)>1:
         return False
     else:
         return True
 def checkByBlock(sudoku,block):
     pass
-def changeValue(sudoku,row,column,value):
-    sudoku[row][column]=value
-    return sudoku
+def changeValue(copy,row,column,value):
+    copy[row][column]=value
+    return copy
 
-def getFirstZero(sudoku):
+def getFirstZero(board):
     position=[]
     count=0
-    for i in range(len(sudoku)):
-        for j in sudoku:
+    for i in range(len(board)):
+        for j in board:
             for value in j:
                 if count==0:
                     if value==0:
-                        position.append(sudoku.index(j))
+                        position.append(board.index(j))
                         position.append(j.index(value))
                         count+=1
     return position
-def actions(sudoku):
-    states={}
-    original= deepcopy(sudoku)
-    coordinates=getFirstZero(sudoku)
-    x=coordinates[0]
-    y=coordinates[1]
-    count=1
-    changeValue(sudoku,x,y,count)
+def actions(board):
+    once=1
+    moves=[]
+    while once==1:
+        copy= deepcopy(board)
+        coordinates=getFirstZero(board)
+        x=coordinates[0]
+        y=coordinates[1]
+        once+=1
+    count = 1
+    while count<=4:
+        changeValue(copy,x,y,count)
+        if checkByColumn(copy,x,count) and checkByRow(copy,y,count):
+            moves.append(count)
+        count+=1
+    return moves
 
+def result(board,action):
+    newState = deepcopy(board)
+    coordinates = getFirstZero(board)
+    value=action.pop()
+    newState=changeValue(newState,coordinates[0],coordinates[1],value)
+    return newState
 
+def goalTest(board):
+    state=check(board)
+    return state
 
-
-
+def stepCost(board, action, state):
+    return 1
 
 
