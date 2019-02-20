@@ -98,8 +98,34 @@ def checkByColumn(board, column, num):
         return False
     else:
         return True
-def checkByBlock(sudoku,block):
-    pass
+def checkByBlock(board,column, row, num):
+    if column<=1:
+        if row<=1:
+            quad=[board[0][0],board[0][1],board[1][1],board[1][0]]
+            if num in quad:
+                return False
+            else:
+                return True
+        if row >= 2 and row <= 3:
+            quad=[board[0][2],board[0][3],board[1][2],board[1][3]]
+            if num in quad:
+                return False
+            else:
+                return True
+    if column<=3 and column>=2:
+        if row<=1:
+            quad = [board[2][0] , board[2][1] , board[3][1] , board[3][0]]
+            if num in quad:
+                return False
+            else:
+                return True
+        if row>=2 and row<=3:
+            quad= [board[2][2] ,board[2][3] , board[3][2] , board[3][3]]
+            if num in quad:
+                return False
+            else:
+                return True
+
 def changeValue(copy,row,column,value):
     copy[row][column]=value
     return copy
@@ -127,8 +153,12 @@ def actions(board):
         once+=1
     count = 1
     while count<=4:
-        changeValue(copy,x,y,count)
-        if checkByColumn(copy,x,count) and checkByRow(copy,y,count):
+        changeValue(copy, x, y, count)
+        a=checkByRow(copy,x,count)
+        b=checkByColumn(copy,y,count)
+        c=checkByRow(copy,y,count)
+        #if checkByColumn(copy,x,count) and checkByRow(copy,y,count) and checkByBlock(copy,x,y,count):
+        if a==True and b==True and c==True:
             moves.append(count)
         count+=1
     return moves
@@ -146,5 +176,25 @@ def goalTest(board):
 
 def stepCost(board, action, state):
     return 1
+
+def pathCost(states):
+    return len(states)
+
+def countBusyRows(board):
+    busyList=[]
+    for row in board:
+        for value in row:
+            if value != 0:
+                busyList.append(value)
+    return len(busyList)
+
+def countBusyColumns(board):
+    busyList=[]
+    for column in range(len(board[0])):
+        for row in board:
+            value=row[column]
+            if value!=0:
+                busyList.append(value)
+    return len(busyList)
 
 
