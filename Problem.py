@@ -44,6 +44,7 @@ def block(board):
     listBlock=[]
     val1= board[0][0] + board[0][1] + board[1][1] + board[1][0]
     val2= board[0][2] + board[0][3] + board[1][2] + board[1][3]
+    val2= board[0][2] + board[0][3] + board[1][2] + board[1][3]
     val3= board[2][0] + board[2][1] + board[3][1] + board[3][0]
     val4= board[2][2] + board[2][3] + board[3][2] + board[3][3]
     if val1==10:
@@ -163,10 +164,9 @@ def actions(board):
         count+=1
     return moves
 
-def result(board,action):
+def result(board,value):
     newState = deepcopy(board)
     coordinates = getFirstZero(board)
-    value=action.pop()
     newState=changeValue(newState,coordinates[0],coordinates[1],value)
     return newState
 
