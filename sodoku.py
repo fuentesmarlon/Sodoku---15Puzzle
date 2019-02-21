@@ -16,6 +16,9 @@ inputString2="2.....3..4.....1"
 board= [[0 for x in range(4)]for y in range(4)]
 
 listSudoku = formatList(inputString2)
+if listSudoku==0:
+    print("No  solution available")
+    quit()
 sudoku=boardGenerator(board, listSudoku)
 
 

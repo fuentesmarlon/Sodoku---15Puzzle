@@ -45,8 +45,8 @@ def graphSearch(board):
     a=False
     while a!=True:
         a = check(negro)
-        print(a)
         if a ==False:
             negro = astar(negro)
             print(negro)
+
     return negro

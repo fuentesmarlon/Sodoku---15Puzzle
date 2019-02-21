@@ -3,7 +3,7 @@ from copy import deepcopy
 def formatList(inputString):
     exitList=[]
     if inputString.count('.')>12:
-        print("No viable solution available")
+        return 0
     else:
         for i in inputString:
             if i==".":
