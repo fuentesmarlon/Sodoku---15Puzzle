@@ -1,7 +1,7 @@
 from Problem import *
 
 def heuristic(board):
-    heuri = abs(len(board)-countBusyColumns(board)-countBusyRows(board))
+    heuri = abs(len(board)+countSpaces(board))
     return heuri
 """
 
@@ -16,31 +16,37 @@ def astar(board):
     criterias=[]
     copy = deepcopy(board)
     possible = actions(copy)
-    print(possible)
     while len(possible)>0:
         value=possible.pop()
         frontier.append(result(copy,value))
     while len(frontier)>0:
         if len(frontier)==1:
             return frontier[0]
+        #Error
         else:
             for i in frontier:
-                cali = board[i]
-                criteria = stepCost(cali)+heuristic(cali)
+
+                criteria = stepCost()+heuristic(i)
+
                 criterias.append(criteria)
+                frontier.remove(i)
+
     criterias.sort()
     for i in frontier:
+
         cali = board[i]
-        criteria = stepCost(cali)+heuristic(cali)
+        criteria = stepCost()+heuristic(cali)
         if criteria==i:
             return cali
 
 def graphSearch(board):
-    a = True
+
     negro = astar(board)
-    while True:
-        print(negro)
-        negro = astar(negro)
-        a = check(board)
+    a=False
+    while a!=True:
+        a = check(negro)
         print(a)
+        if a ==False:
+            negro = astar(negro)
+            print(negro)
     return negro

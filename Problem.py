@@ -2,12 +2,16 @@ from copy import deepcopy
 #function to turn every value in the input into an int number
 def formatList(inputString):
     exitList=[]
-    for i in inputString:
-        if i==".":
-            exitList.append(0)
-        else:
-            exitList.append(int(i))
-    return exitList
+    if inputString.count('.')>12:
+        print("No viable solution available")
+    else:
+        for i in inputString:
+            if i==".":
+                exitList.append(0)
+            else:
+                exitList.append(int(i))
+
+        return exitList
 #creates a board with the values from a list
 def boardGenerator(board, listInput):
     count=0
@@ -149,8 +153,11 @@ def actions(board):
     while once==1:
         copy= deepcopy(board)
         coordinates=getFirstZero(board)
-        x=coordinates[0]
-        y=coordinates[1]
+        if len(coordinates)>0:
+            x=coordinates[0]
+            y=coordinates[1]
+        else:
+            pass
         once+=1
     count = 1
     while count<=4:
@@ -174,27 +181,20 @@ def goalTest(board):
     state=check(board)
     return state
 
-def stepCost(board, action, state):
+def stepCost():
     return 1
 
 def pathCost(states):
     return len(states)
 
-def countBusyRows(board):
+def countSpaces(board):
     busyList=[]
+
     for row in board:
         for value in row:
-            if value != 0:
+            if value == 0:
                 busyList.append(value)
     return len(busyList)
 
-def countBusyColumns(board):
-    busyList=[]
-    for column in range(len(board[0])):
-        for row in board:
-            value=row[column]
-            if value!=0:
-                busyList.append(value)
-    return len(busyList)
 
 
