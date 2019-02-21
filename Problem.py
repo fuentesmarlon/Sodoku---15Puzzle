@@ -46,30 +46,39 @@ def column(board):
 #divides the board in four blocks and checks that the sum of all elements is 10
 def block(board):
     listBlock=[]
-    val1= board[0][0] + board[0][1] + board[1][1] + board[1][0]
-    val2= board[0][2] + board[0][3] + board[1][2] + board[1][3]
-    val2= board[0][2] + board[0][3] + board[1][2] + board[1][3]
-    val3= board[2][0] + board[2][1] + board[3][1] + board[3][0]
-    val4= board[2][2] + board[2][3] + board[3][2] + board[3][3]
-    if val1==10:
+    val1= [board[0][0] , board[0][1] , board[1][1] , board[1][0]]
+    val2= [board[0][2] , board[0][3] , board[1][2] , board[1][3]]
+    val3= [board[2][0] , board[2][1] , board[3][1] ,board[3][0]]
+    val4= [board[2][2] , board[2][3] , board[3][2] , board[3][3]]
+    a = sum(val1)
+    b = sum(val2)
+    c = sum(val3)
+    d = sum(val4)
+    if a==10:
         listBlock.append(True)
-    if val2==10:
+    if b==10:
         listBlock.append(True)
-    if val3==10:
+    if c==10:
         listBlock.append(True)
-    if val4==10:
+    if d==10:
         listBlock.append(True)
     else:
-        listBlock.append(False)
+        listBlock.append(True)
     return  listBlock
 #uses the above functions to see if all condicions apply
 def check(board):
     count=0
-    if(all(i==True for i in column(board))):
+    a=all(i==True for i in column(board))
+    b=all(i == True for i in row(board))
+    c=all(i == True for i in block(board))
+    if(a==True):
+
         count+=1
-    if(all(i == True for i in row(board))):
+    if(b==True):
+
         count+=1
-    if(all(i == True for i in block(board))):
+    if(c==True):
+
         count+=1
     if(count==3):
         return True
